@@ -14,15 +14,16 @@ def recv_msg(sock, chunk_len=1024):
         if len(received_chunk) == 0:
             break
         yield received_chunk
-def main():
+def main(IP_ADDR, PORT):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('127.0.0.1', 80))
-    request_text = 'GET / HTTP/1.0\r\n\r\n'
-    request_bytes = request_text.encode('ASCII')
+    request_text = 'GET / HTTP/1.1\r\n\r\n'
+    request_bytes = request_text.encode('utf-8')
     send_msg(client_socket, request_bytes)
     received_bytes = b''.join(recv_msg(client_socket))
-    received_text = received_bytes.decode('ASCII')
+    received_text = received_bytes.decode('utf-8')
     client_socket.close()
 
 if __name__ == '__main__':
-    main()
+    IP_ADDR, PORT = input()
+    main(IP_ADDR, int(PORT))
+
